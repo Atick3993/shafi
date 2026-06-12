@@ -17,7 +17,7 @@
         h1 {
             text-align: left; 
             color: #111111; 
-            border-bottom: 2px solid #3498db; /* LIGHT BLUE */
+            border-bottom: 2px solid #3498db; 
             padding-bottom: 10px;
             max-width: 800px;
             margin: 0 0 30px 0;
@@ -30,11 +30,11 @@
             border-radius: 8px;
             padding: 20px;
             box-shadow: 0 4px 10px rgba(0,0,0,0.08); 
-            border-left: 5px solid #3498db; /* LIGHT BLUE */
+            border-left: 5px solid #3498db; 
         }
 
         .category-title {
-            color: #3498db; /* LIGHT BLUE */
+            color: #3498db; 
             margin-top: 0;
             margin-bottom: 15px;
             display: flex; 
@@ -83,7 +83,7 @@
 
         .accordion::after {
             content: '\002B';
-            color: #3498db; /* LIGHT BLUE */
+            color: #3498db; 
             font-weight: bold;
             float: right;
             margin-left: 5px;
@@ -120,14 +120,14 @@
         }
 
         .custom-link {
-            color: #5dade2; /* LIGHTER BLUE */
+            color: #5dade2; 
             text-decoration: none;
             font-weight: bold;
         }
 
         .custom-link:hover {
             text-decoration: underline;
-            color: #3498db; /* LIGHT BLUE */
+            color: #3498db; 
         }
 
         #welcome-overlay {
@@ -152,11 +152,11 @@
             border-radius: 12px;
             box-shadow: 0 10px 25px rgba(0,0,0,0.1);
             text-align: center;
-            border-top: 6px solid #3498db; /* LIGHT BLUE */
+            border-top: 6px solid #3498db; 
         }
 
         .enter-btn {
-            background-color: #3498db; /* LIGHT BLUE */
+            background-color: #3498db; 
             color: white;
             border: none;
             padding: 15px 35px;
@@ -164,15 +164,27 @@
             font-weight: bold;
             border-radius: 30px;
             cursor: pointer;
-            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3); /* LIGHT BLUE SHADOW */
+            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3); 
             transition: transform 0.2s, background-color 0.2s;
             margin-top: 20px;
             text-transform: uppercase;
         }
 
         .enter-btn:hover {
-            background-color: #2980b9; /* DARKER BLUE HOVER */
+            background-color: #2980b9; 
             transform: scale(1.05);
+        }
+
+        /* WATERMARK STYLE */
+        .watermark {
+            text-align: center;
+            margin-top: 40px;
+            margin-bottom: 10px;
+            color: #a0aab5;
+            font-size: 13px;
+            font-weight: bold;
+            letter-spacing: 2px;
+            text-transform: uppercase;
         }
     </style>
 </head>
@@ -186,33 +198,36 @@
         </div>
     </div>
 
-    <audio id="soundEnter" src="audio/d-a-t-t-e-b-a-y-o-meme-audiotrimmer.mp3"></audio>
+    <audio id="soundEnter" src="audio/gaaayyyyy_vUi3hqB.mp3"></audio>
     <audio id="soundLove" src="audio/shamol-love-story.mp3"></audio> 
-    <audio id="soundBangla" src="audio/kya-aap-lete-lete.mp3"></audio>
-    <audio id="soundICT" src="audio/kanchana.mp3"></audio>
-    <audio id="soundMath" src="audio/sad-hamster.mp3"></audio>
+    <audio id="soundBangla" src="audio/bhombola.mp3"></audio>
+    <audio id="soundICT" src="audio/anime-ahh.mp3"></audio>
+    <audio id="soundMath" src="audio/gopgopgop.mp3"></audio>
     <audio id="soundPhysics" src="audio/kis-color-chaddi-pehne-ho.mp3"></audio>
     <audio id="soundChemistry" src="audio/movie_1.mp3"></audio>
     <audio id="soundBiology" src="audio/tomar-kache-bichar-dilam_lhW5Xfl.mp3"></audio>
-    <audio id="soundShaun" src="audio/please-khoma-kore-dau.mp3"></audio>
+    <audio id="soundBOLT" src="audio/iamete-kudasai_JnQT89a.mp3"></audio>
     <audio id="soundFriends" src="audio/nani_Pmxf5n3.mp3"></audio>
     <audio id="soundSocial" src="audio/tole-tole-kawaii.mp3"></audio>
     <audio id="soundMentalHealth" src="audio/1-akash-chowa.mp3"></audio>
 
     <h1>SHAFI's Life Update</h1>
+    
     <h2>SHAFI IS NO MORE</h2>
     
     <div class="life-category">
         <h2 class="category-title"> <b>Mental Health</b></h2>
         <p style="display: flex; justify-content: space-between; align-items: center;"> 
               -mental health update 
+            
             <button class="bgm-btn-black" onclick="playMentalHealth()">BGM</button>
         </p>
     </div>
     
     <div class="life-category">
         <h2 class="category-title"><b>Love </b><button class="bgm-btn-black" onclick="playLove()">BGM</button></h2>
-        <p> -cde na keo mone lage dheo</p>
+        <p> -cde na keo mone lage dheo  </p>
+         
     </div>
 
     <div class="life-category">
@@ -223,15 +238,15 @@
         <div class="panel">
             <ul>
                 <li>
-                    <span><b> Bangla</b> -আর জিগাইস না ভাই,বাংলা হারি না</span>
+                    <span><b> Bangla</b> -বুদা বাংক্লা পড়ি কি হবি? বুয়েট এ বাংলা আসে না</span>
                     <button class="bgm-btn-black" onclick="playBangla()">BGM</button>
                 </li>
                 <li>
-                    <span><b> ICT</b> <i> -জীবন চালানির মত</i></span>
+                    <span><b> ICT</b> <i> -তবুও জীবন জাচ্ছে কেটে জীবনের নিয়মে</i></span>
                     <button class="bgm-btn-black" onclick="playICT()">BGM</button>
                 </li>
                 <li>
-                    <span><b> Math </b> -monthly  তে ৮ পাইসি,তুই বুঝি নে এবার</span>
+                    <span><b> Math </b> -চলে ১ বছর,অধ্যায় ৪,৫টা শেষ করছি্‌,এটা করি তো আর একটা মনে থাকে না</span>
                     <button class="bgm-btn-black" onclick="playMath()">BGM</button>
                 </li>
                 <li>
@@ -251,8 +266,8 @@
     </div>
 
     <div class="life-category">
-        <h2 class="category-title"><b> Shaun Bhai </b> <button class="bgm-btn-black" onclick="playShaun()">BGM</button></h2>
-        <p><b> -ভাই তো পড়ায় সেই্‌ইইইইইইইইইই!!!!! সব ই বুঝি_ , কিন্তু মেসে  এসে আর বই বের করে  দেখা হই‌না তাই ইংলিশ ও পারি না</b></p>
+        <h2 class="category-title"><b> BOLT </b> <button class="bgm-btn-black" onclick="playBOLT()">BGM</button></h2>
+        <p><b> -আমাড় লাঈফ এ বোল্ট এর তাতপর্য অনেক,ও না থাক্লি আমি জীবনে চুত্মারানি হইতেই পারতাম না।  instagram er kalo jogot a bolt e amake dustbion theke tule niye rajar mukut poraise . thanx bolt for distroying my life with this much joy .. i love yooooou</b></p>
     </div>
 
     <div class="life-category">
@@ -272,10 +287,14 @@
                 <i class="fa-brands fa-facebook" style="color: #1877F2; font-size: 22px;"></i> Facebook
             </a>
             
-            <a href="https://www.instagram.com/_fading_stardust_x" target="_blank" class="custom-link" style="display: inline-flex; align-items: center; gap: 8px;">
+            <a href="https://www.instagram.com/tanvirahamedshafi/" target="_blank" class="custom-link" style="display: inline-flex; align-items: center; gap: 8px;">
                 <i class="fa-brands fa-instagram" style="color: #E1306C; font-size: 22px;"></i> Instagram
             </a>
         </div>
+    </div>
+
+    <div class="watermark">
+        Built by BOLT ⚡
     </div>
 
     <script>
@@ -315,7 +334,7 @@
         function playPhysics() { stopAllAudio(); document.getElementById("soundPhysics").play(); }
         function playChemistry() { stopAllAudio(); document.getElementById("soundChemistry").play(); }
         function playBiology() { stopAllAudio(); document.getElementById("soundBiology").play(); }
-        function playShaun() { stopAllAudio(); document.getElementById("soundShaun").play(); }
+        function playBOLT() { stopAllAudio(); document.getElementById("soundBOLT").play(); }
         function playFriends() { stopAllAudio(); document.getElementById("soundFriends").play(); }
         function playSocial() { stopAllAudio(); document.getElementById("soundSocial").play(); }
         function playMentalHealth() { stopAllAudio(); document.getElementById("soundMentalHealth").play(); }
