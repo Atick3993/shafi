@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SHAFI's Life Update</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            background-color: #f5f6fa; 
+            color: #333333; 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 30px; 
+        }
+
+        h1 {
+            text-align: left; 
+            color: #111111; 
+            border-bottom: 2px solid #3498db; /* LIGHT BLUE */
+            padding-bottom: 10px;
+            max-width: 800px;
+            margin: 0 0 30px 0;
+        }
+
+        .life-category {
+            max-width: 800px;
+            margin: 15px 0;
+            background-color: #ffffff; 
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.08); 
+            border-left: 5px solid #3498db; /* LIGHT BLUE */
+        }
+
+        .category-title {
+            color: #3498db; /* LIGHT BLUE */
+            margin-top: 0;
+            margin-bottom: 15px;
+            display: flex; 
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .bgm-btn-black {
+            background-color: transparent; 
+            border: 1px solid #121212; 
+            color: #121212;
+            border-radius: 20px; 
+            padding: 6px 12px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+            transition: 0.3s;
+            text-transform: uppercase; 
+        }
+
+        .bgm-btn-black:hover {
+            background-color: #121212; 
+            color: #ffffff;
+        }
+
+        .accordion {
+            background-color: #f0f0f0; 
+            color: #333333;
+            cursor: pointer;
+            padding: 15px;
+            width: 100%;
+            border: none;
+            text-align: left;
+            outline: none;
+            font-size: 16px;
+            font-weight: bold;
+            transition: 0.4s;
+            border-radius: 5px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .active, .accordion:hover {
+            background-color: #e0e0e0;
+        }
+
+        .accordion::after {
+            content: '\002B';
+            color: #3498db; /* LIGHT BLUE */
+            font-weight: bold;
+            float: right;
+            margin-left: 5px;
+        }
+
+        .active::after {
+            content: "\2212";
+        }
+
+        .panel {
+            padding: 0 15px;
+            background-color: #fafafa;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+            border-radius: 0 0 5px 5px;
+        }
+
+        .panel ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .panel li {
+            padding: 12px 10px;
+            border-bottom: 1px solid #e0e0e0;
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center;
+        }
+
+        .panel li:last-child {
+            border-bottom: none;
+        }
+
+        .custom-link {
+            color: #5dade2; /* LIGHTER BLUE */
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .custom-link:hover {
+            text-decoration: underline;
+            color: #3498db; /* LIGHT BLUE */
+        }
+
+        #welcome-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(245, 246, 250, 0.95);
+            backdrop-filter: blur(8px);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+
+        .overlay-card {
+            background: #ffffff;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            text-align: center;
+            border-top: 6px solid #3498db; /* LIGHT BLUE */
+        }
+
+        .enter-btn {
+            background-color: #3498db; /* LIGHT BLUE */
+            color: white;
+            border: none;
+            padding: 15px 35px;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 30px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3); /* LIGHT BLUE SHADOW */
+            transition: transform 0.2s, background-color 0.2s;
+            margin-top: 20px;
+            text-transform: uppercase;
+        }
+
+        .enter-btn:hover {
+            background-color: #2980b9; /* DARKER BLUE HOVER */
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+
+    <div id="welcome-overlay">
+        <div class="overlay-card">
+            <h2 style="margin-top:0; color:#111111;">Welcome to SHAFI's Life Update</h2>
+            <p style="color:#666666; margin-bottom:20px;">Turn your volume up before entering.</p>
+            <button class="enter-btn" onclick="enterSite()">Enter Site</button>
+        </div>
+    </div>
+
+    <audio id="soundEnter" src="audio/d-a-t-t-e-b-a-y-o-meme-audiotrimmer.mp3"></audio>
+    <audio id="soundLove" src="audio/shamol-love-story.mp3"></audio> 
+    <audio id="soundBangla" src="audio/kya-aap-lete-lete.mp3"></audio>
+    <audio id="soundICT" src="audio/kanchana.mp3"></audio>
+    <audio id="soundMath" src="audio/sad-hamster.mp3"></audio>
+    <audio id="soundPhysics" src="audio/kis-color-chaddi-pehne-ho.mp3"></audio>
+    <audio id="soundChemistry" src="audio/movie_1.mp3"></audio>
+    <audio id="soundBiology" src="audio/tomar-kache-bichar-dilam_lhW5Xfl.mp3"></audio>
+    <audio id="soundShaun" src="audio/please-khoma-kore-dau.mp3"></audio>
+    <audio id="soundFriends" src="audio/nani_Pmxf5n3.mp3"></audio>
+    <audio id="soundSocial" src="audio/tole-tole-kawaii.mp3"></audio>
+    <audio id="soundMentalHealth" src="audio/1-akash-chowa.mp3"></audio>
+
+    <h1>SHAFI's Life Update</h1>
+    <h2>SHAFI IS NO MORE</h2>
+    
+    <div class="life-category">
+        <h2 class="category-title"> <b>Mental Health</b></h2>
+        <p style="display: flex; justify-content: space-between; align-items: center;"> 
+              -mental health update 
+            <button class="bgm-btn-black" onclick="playMentalHealth()">BGM</button>
+        </p>
+    </div>
+    
+    <div class="life-category">
+        <h2 class="category-title"><b>Love </b><button class="bgm-btn-black" onclick="playLove()">BGM</button></h2>
+        <p> -cde na keo mone lage dheo</p>
+    </div>
+
+    <div class="life-category">
+        <h2 class="category-title"><b>Study</b></h2>
+        <p>Current academic status and progress.</p>
+        
+        <button class="accordion">View Subjects</button>
+        <div class="panel">
+            <ul>
+                <li>
+                    <span><b> Bangla</b> -আর জিগাইস না ভাই,বাংলা হারি না</span>
+                    <button class="bgm-btn-black" onclick="playBangla()">BGM</button>
+                </li>
+                <li>
+                    <span><b> ICT</b> <i> -জীবন চালানির মত</i></span>
+                    <button class="bgm-btn-black" onclick="playICT()">BGM</button>
+                </li>
+                <li>
+                    <span><b> Math </b> -monthly  তে ৮ পাইসি,তুই বুঝি নে এবার</span>
+                    <button class="bgm-btn-black" onclick="playMath()">BGM</button>
+                </li>
+                <li>
+                    <span><b> Physics</b> <i> -shit bhai,3 মাস ধরি ভেক্টর শেষ করে নিজেরে বহুত বড় লেংটা ভাবসিলাম...। পরে দেখি না্‌ ,আমি ভোদাই</i></span>
+                    <button class="bgm-btn-black" onclick="playPhysics()">BGM</button>
+                </li>
+                <li>
+                    <span> <b>Chemistry </b> -ইডার অবস্থাও ict এর মতো</span>
+                    <button class="bgm-btn-black" onclick="playChemistry()">BGM</button>
+                </li>
+                <li>
+                    <span> <b>Biology </b><i> -বই ই খুলে দেখি নাই্‌া ওহ wait বই তো কিনি ই নাই</i></span>
+                    <button class="bgm-btn-black" onclick="playBiology()">BGM</button>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="life-category">
+        <h2 class="category-title"><b> Shaun Bhai </b> <button class="bgm-btn-black" onclick="playShaun()">BGM</button></h2>
+        <p><b> -ভাই তো পড়ায় সেই্‌ইইইইইইইইইই!!!!! সব ই বুঝি_ , কিন্তু মেসে  এসে আর বই বের করে  দেখা হই‌না তাই ইংলিশ ও পারি না</b></p>
+    </div>
+
+    <div class="life-category">
+        <h2 class="category-title"> <b>Friends</b> <button class="bgm-btn-black" onclick="playFriends()">BGM</button></h2>
+        <p><b> -same as love life</b></p>
+    </div>
+
+   <div class="life-category">
+        <h2 class="category-title"><b>Social</b></h2>
+        <p style="display: flex; justify-content: space-between; align-items: center;"> 
+            -BGM shune bujhe ne,,,dhorijo nai 
+            <button class="bgm-btn-black" onclick="playSocial()">BGM</button>
+        </p>
+
+        <div style="margin-top: 15px;">
+            <a href="https://www.facebook.com/md.atick.hasan.633179/" target="_blank" class="custom-link" style="margin-right: 15px; display: inline-flex; align-items: center; gap: 8px;">
+                <i class="fa-brands fa-facebook" style="color: #1877F2; font-size: 22px;"></i> Facebook
+            </a>
+            
+            <a href="https://www.instagram.com/_fading_stardust_x" target="_blank" class="custom-link" style="display: inline-flex; align-items: center; gap: 8px;">
+                <i class="fa-brands fa-instagram" style="color: #E1306C; font-size: 22px;"></i> Instagram
+            </a>
+        </div>
+    </div>
+
+    <script>
+        var acc = document.getElementsByClassName("accordion");
+        for (var i = 0; i < acc.length; i++) {
+            acc[i].addEventListener("click", function() {
+                this.classList.toggle("active");
+                var panel = this.nextElementSibling;
+                if (panel.style.maxHeight) {
+                    panel.style.maxHeight = null;
+                } else {
+                    panel.style.maxHeight = panel.scrollHeight + "px";
+                } 
+            });
+        }
+    
+        function stopAllAudio() {
+            var sounds = document.getElementsByTagName('audio');
+            for(var j = 0; j < sounds.length; j++) {
+                sounds[j].pause();
+                sounds[j].currentTime = 0;
+            }
+        }
+
+        function enterSite() {
+            var overlay = document.getElementById("welcome-overlay");
+            overlay.style.opacity = "0";
+            overlay.style.visibility = "hidden";
+            stopAllAudio();
+            document.getElementById("soundEnter").play();
+        }
+
+        function playLove() { stopAllAudio(); document.getElementById("soundLove").play(); }
+        function playBangla() { stopAllAudio(); document.getElementById("soundBangla").play(); }
+        function playICT() { stopAllAudio(); document.getElementById("soundICT").play(); }
+        function playMath() { stopAllAudio(); document.getElementById("soundMath").play(); }
+        function playPhysics() { stopAllAudio(); document.getElementById("soundPhysics").play(); }
+        function playChemistry() { stopAllAudio(); document.getElementById("soundChemistry").play(); }
+        function playBiology() { stopAllAudio(); document.getElementById("soundBiology").play(); }
+        function playShaun() { stopAllAudio(); document.getElementById("soundShaun").play(); }
+        function playFriends() { stopAllAudio(); document.getElementById("soundFriends").play(); }
+        function playSocial() { stopAllAudio(); document.getElementById("soundSocial").play(); }
+        function playMentalHealth() { stopAllAudio(); document.getElementById("soundMentalHealth").play(); }
+    </script>
+</body>
+</html>
