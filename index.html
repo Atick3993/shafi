@@ -1,343 +1,527 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="bn">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SHAFI's Life Update</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        body {
-            background-color: #f5f6fa; 
-            color: #333333; 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            padding: 30px; 
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>বায়োলজি এক্সাম কুইজ</title>
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0f1620;
+    --panel:#161f2c;
+    --panel2:#1c2735;
+    --accent:#3ddc97;
+    --accent2:#ffb454;
+    --bad:#ff6b6b;
+    --text:#e8edf2;
+    --muted:#8b98a8;
+    --border:#2a3646;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:'Hind Siliguri', sans-serif;
+    background:linear-gradient(180deg,#0f1620,#0b1119);
+    color:var(--text);
+    min-height:100vh;
+    padding:20px 12px 60px;
+  }
+  .wrap{max-width:760px;margin:0 auto;}
+  header{
+    text-align:center;
+    margin-bottom:18px;
+  }
+  header h1{
+    font-size:1.5rem;
+    margin:0 0 4px;
+    font-weight:700;
+  }
+  header p{color:var(--muted);margin:0;font-size:0.9rem;}
 
-        h1 {
-            text-align: left; 
-            color: #111111; 
-            border-bottom: 2px solid #3498db; 
-            padding-bottom: 10px;
-            max-width: 800px;
-            margin: 0 0 30px 0;
-        }
+  .setup{
+    background:var(--panel);
+    border:1px solid var(--border);
+    border-radius:16px;
+    padding:20px;
+  }
+  .chapter-list{display:flex;flex-direction:column;gap:10px;margin:14px 0;}
+  .chapter-item{
+    display:flex;align-items:center;gap:10px;
+    background:var(--panel2);
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:12px 14px;
+    cursor:pointer;
+    user-select:none;
+  }
+  .chapter-item input{width:18px;height:18px;accent-color:var(--accent);}
+  .chapter-item .name{flex:1;font-weight:500;}
+  .chapter-item .count{color:var(--muted);font-size:0.85rem;}
 
-        .life-category {
-            max-width: 800px;
-            margin: 15px 0;
-            background-color: #ffffff; 
-            border-radius: 8px;
-            padding: 20px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.08); 
-            border-left: 5px solid #3498db; 
-        }
+  .setup-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px;}
+  .setup-row label{font-size:0.85rem;color:var(--muted);display:block;margin-bottom:6px;}
+  select{
+    background:var(--panel2);
+    color:var(--text);
+    border:1px solid var(--border);
+    border-radius:8px;
+    padding:8px 10px;
+    font-family:inherit;
+    font-size:0.9rem;
+  }
+  button{
+    font-family:inherit;
+    cursor:pointer;
+    border:none;
+  }
+  .btn-primary{
+    background:var(--accent);
+    color:#08120d;
+    font-weight:700;
+    font-size:1rem;
+    padding:14px;
+    border-radius:12px;
+    width:100%;
+    margin-top:18px;
+  }
+  .btn-primary:active{transform:scale(0.99);}
+  .btn-secondary{
+    background:transparent;
+    color:var(--accent);
+    border:1px solid var(--accent);
+    padding:10px 16px;
+    border-radius:10px;
+    font-weight:600;
+  }
 
-        .category-title {
-            color: #3498db; 
-            margin-top: 0;
-            margin-bottom: 15px;
-            display: flex; 
-            justify-content: space-between;
-            align-items: center;
-        }
+  /* Quiz screen */
+  .quiz-panel{
+    background:var(--panel);
+    border:1px solid var(--border);
+    border-radius:16px;
+    padding:20px;
+    display:none;
+  }
+  .progress-bar{
+    height:6px;
+    background:var(--panel2);
+    border-radius:4px;
+    overflow:hidden;
+    margin-bottom:14px;
+  }
+  .progress-fill{
+    height:100%;
+    background:var(--accent);
+    width:0%;
+    transition:width 0.3s ease;
+  }
+  .meta-row{
+    display:flex;justify-content:space-between;align-items:center;
+    color:var(--muted);font-size:0.85rem;margin-bottom:6px;
+  }
+  .chapter-tag{
+    color:var(--accent2);
+    font-weight:600;
+  }
+  .q-text{
+    font-size:1.08rem;
+    font-weight:600;
+    line-height:1.6;
+    margin:10px 0 18px;
+  }
+  .options{display:flex;flex-direction:column;gap:10px;}
+  .option{
+    background:var(--panel2);
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:13px 14px;
+    font-size:0.98rem;
+    display:flex;
+    gap:10px;
+    align-items:flex-start;
+    line-height:1.5;
+  }
+  .option .letter{
+    flex-shrink:0;
+    width:24px;height:24px;
+    border-radius:50%;
+    background:#0f1620;
+    border:1px solid var(--border);
+    display:flex;align-items:center;justify-content:center;
+    font-size:0.8rem;color:var(--muted);
+  }
+  .option.correct{
+    border-color:var(--accent);
+    background:rgba(61,220,151,0.12);
+  }
+  .option.correct .letter{background:var(--accent);color:#08120d;border-color:var(--accent);}
+  .option.wrong{
+    border-color:var(--bad);
+    background:rgba(255,107,107,0.12);
+  }
+  .option.wrong .letter{background:var(--bad);color:#2a0d0d;border-color:var(--bad);}
+  .option.disabled{cursor:default;}
+  .option:not(.disabled):active{transform:scale(0.99);}
 
-        .bgm-btn-black {
-            background-color: transparent; 
-            border: 1px solid #121212; 
-            color: #121212;
-            border-radius: 20px; 
-            padding: 6px 12px;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: bold;
-            transition: 0.3s;
-            text-transform: uppercase; 
-        }
+  .nav-row{
+    display:flex;justify-content:space-between;align-items:center;
+    margin-top:20px;
+  }
+  .next-btn{
+    background:var(--accent);
+    color:#08120d;
+    font-weight:700;
+    padding:11px 22px;
+    border-radius:10px;
+    font-size:0.95rem;
+    opacity:0.4;
+    pointer-events:none;
+    transition:opacity 0.2s;
+  }
+  .next-btn.active{opacity:1;pointer-events:auto;}
+  .skip-btn{color:var(--muted);font-size:0.85rem;background:none;}
 
-        .bgm-btn-black:hover {
-            background-color: #121212; 
-            color: #ffffff;
-        }
-
-        .accordion {
-            background-color: #f0f0f0; 
-            color: #333333;
-            cursor: pointer;
-            padding: 15px;
-            width: 100%;
-            border: none;
-            text-align: left;
-            outline: none;
-            font-size: 16px;
-            font-weight: bold;
-            transition: 0.4s;
-            border-radius: 5px;
-            display: flex;
-            justify-content: space-between;
-        }
-
-        .active, .accordion:hover {
-            background-color: #e0e0e0;
-        }
-
-        .accordion::after {
-            content: '\002B';
-            color: #3498db; 
-            font-weight: bold;
-            float: right;
-            margin-left: 5px;
-        }
-
-        .active::after {
-            content: "\2212";
-        }
-
-        .panel {
-            padding: 0 15px;
-            background-color: #fafafa;
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s ease-out;
-            border-radius: 0 0 5px 5px;
-        }
-
-        .panel ul {
-            list-style-type: none;
-            padding-left: 0;
-        }
-
-        .panel li {
-            padding: 12px 10px;
-            border-bottom: 1px solid #e0e0e0;
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center;
-        }
-
-        .panel li:last-child {
-            border-bottom: none;
-        }
-
-        .custom-link {
-            color: #5dade2; 
-            text-decoration: none;
-            font-weight: bold;
-        }
-
-        .custom-link:hover {
-            text-decoration: underline;
-            color: #3498db; 
-        }
-
-        #welcome-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(245, 246, 250, 0.95);
-            backdrop-filter: blur(8px);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-            transition: opacity 0.5s ease, visibility 0.5s ease;
-        }
-
-        .overlay-card {
-            background: #ffffff;
-            padding: 40px;
-            border-radius: 12px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-            text-align: center;
-            border-top: 6px solid #3498db; 
-        }
-
-        .enter-btn {
-            background-color: #3498db; 
-            color: white;
-            border: none;
-            padding: 15px 35px;
-            font-size: 18px;
-            font-weight: bold;
-            border-radius: 30px;
-            cursor: pointer;
-            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3); 
-            transition: transform 0.2s, background-color 0.2s;
-            margin-top: 20px;
-            text-transform: uppercase;
-        }
-
-        .enter-btn:hover {
-            background-color: #2980b9; 
-            transform: scale(1.05);
-        }
-
-        /* WATERMARK STYLE */
-        .watermark {
-            text-align: center;
-            margin-top: 40px;
-            margin-bottom: 10px;
-            color: #a0aab5;
-            font-size: 13px;
-            font-weight: bold;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-        }
-    </style>
+  /* Result screen */
+  .result-panel{display:none;text-align:center;}
+  .score-circle{
+    width:150px;height:150px;
+    border-radius:50%;
+    margin:20px auto;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    background:var(--panel2);
+    border:6px solid var(--accent);
+  }
+  .score-circle .num{font-size:2.2rem;font-weight:700;}
+  .score-circle .lbl{font-size:0.8rem;color:var(--muted);}
+  .result-msg{font-size:1.05rem;margin:10px 0 20px;color:var(--muted);}
+  .review-list{text-align:right;margin-top:20px;}
+  .review-item{
+    background:var(--panel2);
+    border:1px solid var(--border);
+    border-left:4px solid var(--bad);
+    border-radius:8px;
+    padding:12px 14px;
+    margin-bottom:10px;
+    font-size:0.92rem;
+    line-height:1.6;
+  }
+  .review-item .ans{color:var(--accent);font-weight:600;}
+  .review-item .yours{color:var(--bad);}
+  .btn-group{display:flex;gap:10px;margin-top:20px;}
+  .btn-group button{flex:1;}
+</style>
 </head>
 <body>
+<div class="wrap">
+  <header>
+    <h1>🧬 বায়োলজি এক্সাম কুইজ</h1>
+    <p>৫টি অধ্যায় থেকে সবগুলো প্রশ্ন — এখনই প্র্যাকটিস করো</p>
+  </header>
 
-    <div id="welcome-overlay">
-        <div class="overlay-card">
-            <h2 style="margin-top:0; color:#111111;">Welcome to SHAFI's Life Update</h2>
-            <p style="color:#666666; margin-bottom:20px;">Turn your volume up before entering.</p>
-            <button class="enter-btn" onclick="enterSite()">Enter Site</button>
+  <div class="setup" id="setupPanel">
+    <label style="font-size:0.85rem;color:var(--muted);">যে অধ্যায়গুলো থেকে পরীক্ষা দিতে চাও (একাধিক বাছাই করা যাবে):</label>
+    <div class="chapter-list" id="chapterList"></div>
+
+    <div class="setup-row">
+      <div>
+        <label>প্রশ্নের ক্রম</label>
+        <select id="orderSelect">
+          <option value="sequential">সিরিয়াল অনুযায়ী</option>
+          <option value="random" selected>র‍্যান্ডম</option>
+        </select>
+      </div>
+    </div>
+
+    <button class="btn-primary" id="startBtn">পরীক্ষা শুরু করো</button>
+  </div>
+
+  <div class="quiz-panel" id="quizPanel">
+    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+    <div class="meta-row">
+      <span class="chapter-tag" id="chapterTag"></span>
+      <span id="qCounter"></span>
+    </div>
+    <div class="q-text" id="qText"></div>
+    <div class="options" id="optionsBox"></div>
+    <div class="nav-row">
+      <button class="skip-btn" id="skipBtn">এড়িয়ে যাও →</button>
+      <button class="next-btn" id="nextBtn">পরবর্তী প্রশ্ন</button>
+    </div>
+  </div>
+
+  <div class="result-panel" id="resultPanel">
+    <div class="score-circle">
+      <div class="num" id="scoreNum">0/0</div>
+      <div class="lbl">স্কোর</div>
+    </div>
+    <div class="result-msg" id="resultMsg"></div>
+    <div class="btn-group">
+      <button class="btn-secondary" id="reviewBtn">ভুল উত্তরগুলো দেখো</button>
+      <button class="btn-primary" id="restartBtn" style="margin-top:0;">আবার শুরু করো</button>
+    </div>
+    <div class="review-list" id="reviewList" style="display:none;"></div>
+  </div>
+</div>
+
+<script>
+const DATA = {
+"ব্রায়োফাইটা ও টেরিডোফাইটা": [
+["বাংলাদেশে Riccia গণের কতটি প্রজাতি সনাক্ত হয়েছে?",["২৫টি","৩৫টি","৪৫টি","৫৫টি"],2],
+["মস বা ব্রায়োফাইটে মূলের পরিবর্তে থাকে—",["রাইজোম","রাইজয়েড","মূলরোম","স্টোলন"],1],
+["উভচর উদ্ভিদ বলা হয়—",["টেরিডোফাইটকে","ব্রায়োফাইটকে","শৈবালকে","ছত্রাককে"],1],
+["ব্রায়োফাইটের নিষেকের জন্য প্রয়োজন—",["বায়ু","তরল মাধ্যম","পতঙ্গ","শুষ্ক মাটি"],1],
+["ব্রায়োফাইটের শুক্রাণুতে ফ্ল্যাজেলা থাকে—",["১টি","২টি","৩টি","৪টি"],1],
+["লিভারওয়ার্ট বলা হয়—",["Pteris-কে","Riccia (Hepaticae)-কে","Chara-কে","Ulothrix-কে"],1],
+["স্পোরোফাইট আদি প্রকৃতির এবং থ্যালাসের মধ্যে নিয়োজিত থাকে কোন উদ্ভিদে?",["Pteris","Chlamydomonas","Riccia sp.","Agaricus"],2],
+["Riccia-র কোন প্রজাতি জলজ?",["Riccia glauca","Riccia fluitans","Riccia discolor","Riccia sorocarpa"],1],
+["Riccia-র থ্যালাসগুলোর গোলাপের পাপড়ির মতো সজ্জাকে বলে—",["থ্যালোজ","রোসেট","ফ্রন্ড","পাইলিয়াস"],1],
+["Pteris-এর স্পোরোফাইটের প্রথম কোষ—",["স্পোর","উস্পোর (oospore)","জাইগোট","ভ্রূণ"],1],
+["পৃথিবীর আদিমতম ভাস্কুলার (পরিবহন টিস্যুযুক্ত) উদ্ভিদ বলে বিবেচিত—",["ব্রায়োফাইটা","টেরিডোফাইটা","শৈবাল","ছত্রাক"],1],
+["সান ফার্ন বলা হয়—",["Riccia-কে","Pteris-কে","Chara-কে","Ulothrix-কে"],1],
+["ফার্নের (স্পোরোফাইটিক) মিয়োসিস ঘটে—",["মূলে","জনন মাতৃকোষে","কাণ্ডে","পত্ররন্ধ্রে"],1],
+["ফার্নের রাইজোমে বাদামী বর্ণের শল্কপত্রকে বলে—",["ক্রোজিয়ার","রামেন্টা","স্পোরোফিল","ইন্ডুসিয়াম"],1],
+["ফার্নের কুন্ডলিত কচি পাতাকে বলা হয়—",["রামেন্টা","ক্রোজিয়ার","সোরাস","প্রোথ্যালাস"],1],
+["সোরাস উৎপন্নকারী পাতাকে বলা হয়—",["ফ্রন্ড","স্পোরোফিল","রামেন্টা","থ্যালাস"],1],
+["Pteris-এর গ্যামিটোফাইট (প্রোথ্যালাস) কেমন?",["মূলাকার ও বর্ণহীন","হৃদপিন্ডাকার, সবুজ, হ্যাপ্লয়েড","গোলাকার ও ডিপ্লয়েড","শাখাযুক্ত ও বর্ণহীন"],1],
+["নোট অনুযায়ী, পুংজননাঙ্গকে বলা হয়—",["অ্যান্থেরিডিয়াম","আর্কিগোনিয়াম","সোরাস","ইন্ডুসিয়াম"],1],
+["সোরাস তৈরি হয়—",["যৌন পদ্ধতিতে","অযৌন পদ্ধতিতে","উভয় পদ্ধতিতে","কোনোটিই নয়"],1],
+["Riccia পরিবেশের কীসের সূচক হিসেবে কাজ করে?",["মাটি দূষণ","পরিবেশ দূষণ","পানি ঘাটতি","তাপমাত্রা বৃদ্ধি"],1],
+["Pteris-এর স্পোরাঞ্জিয়াম কী দিয়ে ঢাকা থাকে?",["প্রকৃত ইন্ডুসিয়াম","ফলস্ ইন্ডুসিয়াম","রামেন্টা","থ্যালাস"],1],
+["Pteris তথা ফার্নের শুক্রাণু কেমন?",["নিশ্চল, একফ্ল্যাজেলা","সচল, বহু ফ্ল্যাজেলাবিশিষ্ট","নিশ্চল, ফ্ল্যাজেলাবিহীন","সচল, একফ্ল্যাজেলা"],1]
+],
+"কোষ বিভাজন": [
+["দেহে টিউমার ছড়িয়ে পড়াকে বলে—",["Necrosis","Metastasis","Apoptosis","Mitosis"],1],
+["মিয়োসিস কোষ বিভাজন প্রথম প্রত্যক্ষ করেন—",["ফ্লেমিং","বোভেরি","মর্গান","মেন্ডেল"],1],
+["কোষ বিভাজন আবিষ্কার করেন—",["বোভেরি","ডব্লিউ ফ্লেমিং","মর্গান","স্ট্রাসবার্গার"],1],
+["কোষচক্রে ব্যয়িত সময়ের হার হলো—",["৫০-৬০%","৭০-৮০%","৯০-৯৫%","২০-৩০%"],2],
+["মাইটোসিসের কোন পর্যায়ে স্পিন্ডল ফাইবার অদৃশ্য হয়?",["প্রোফেজ","মেটাফেজ","অ্যানাফেজ","টেলোফেজ"],3],
+["যেসব ডিপ্লয়েড কোষে মিয়োসিস ঘটে তাকে বলে—",["গ্যামেট","মিয়োসাইট","স্পোরোসাইট","জাইগোট"],1],
+["স্পিন্ডলের বিষুবীয় অঞ্চলে ক্রোমোজোম বিন্যস্ত হওয়াকে বলে—",["সিন্যাপসিস","মেটাকাইনেসিস","ক্যারিওকাইনেসিস","কনডেনসেশন"],1],
+["জনুক্রমে ভূমিকা রাখে—",["মাইটোসিস","মিয়োসিস","উভয়ই","কোনোটিই নয়"],1],
+["মাইটোসিসের কোন ধাপে কোষপ্লেটের সূচনা ঘটে?",["প্রোফেজ","মেটাফেজ","অ্যানাফেজ","টেলোফেজ"],3],
+["মাইটোসিসের কোন দশায় ক্রোমোজোম বিষুবীয় অঞ্চলে বিন্যস্ত হয়?",["প্রোফেজ","মেটাফেজ","অ্যানাফেজ","টেলোফেজ"],1],
+["ক্রসিং ওভার ঘটে—",["মাইটোসিসের মেটাফেজে","মিয়োসিসের প্রফেজ-১ এ","মিয়োসিসের অ্যানাফেজ-২ এ","ইন্টারফেজে"],1],
+["ক্রোমোজোমের খাটো ও মোটা হওয়াকে বলে—",["সিন্যাপসিস","কনডেনসেশন","টার্মিনালাইজেশন","মেটাকাইনেসিস"],1],
+["দুটি হোমোলোগাস ক্রোমোজোমের মধ্যে জোড় সৃষ্টি হওয়াকে বলে—",["কনডেনসেশন","সিন্যাপসিস","মেটাকাইনেসিস","ক্যারিওকাইনেসিস"],1],
+["ক্রসিং ওভার সম্পর্কে সর্বপ্রথম ধারণা দেন—",["বোভেরি","থমাস হান্ট মর্গান","ফ্লেমিং","মেন্ডেল"],1],
+["নিউক্লিয়াসের বিভাজনকে বলে—",["সাইটোকাইনেসিস","ক্যারিওকাইনেসিস","মেটাকাইনেসিস","কনডেনসেশন"],1],
+["ক্রসিং ওভার ঘটে কোন উপ-পর্যায়ে?",["লেপ্টোটিন","জাইগোটিন","প্যাকাইটিন","ডিপ্লোটিন"],2],
+["মিয়োসিসে X আকৃতির গঠন দেখা যায়—",["লেপ্টোটিন","জাইগোটিন","প্যাকাইটিন","ডায়াকাইনেসিস"],2],
+["মাইটোসিসের প্রোমেটাফেজ পর্যায়ে দেখা যায়—",["সিন্যাপসিস","ক্রোমোজোমীয় নৃত্য","কনডেনসেশন","টার্মিনালাইজেশন"],1],
+["বাইভ্যালেন্ট সৃষ্টি হয়—",["লেপ্টোটিন উপ-পর্যায়ে","জাইগোটিন উপ-পর্যায়ে","প্যাকাইটিন উপ-পর্যায়ে","ডিপ্লোটিন উপ-পর্যায়ে"],1],
+["অ্যানাফেজ ধাপে ক্রোমোজোম কোন আকার ধারণ করে?",["শুধু I আকার","শুধু V আকার","V, L, J ও I আকার","গোলাকার"],2]
+],
+"শ্বসন ও শ্বাসক্রিয়া": [
+["শ্বসনের স্নায়বিক নিয়ন্ত্রণে ভূমিকা রাখে—",["ভেগাস স্নায়ু","অপটিক স্নায়ু","ফ্রেনিক স্নায়ু","ট্রাইজেমিনাল স্নায়ু"],0],
+["মানব ভ্রূণে সারফ্যাকট্যান্ট ক্ষরণ শুরু হয় কত সপ্তাহ বয়সে?",["১৮ সপ্তাহ","২৩ সপ্তাহ","৩০ সপ্তাহ","৩৬ সপ্তাহ"],1],
+["এপিগ্লটিস অবস্থিত—",["গলবিলে","স্বরযন্ত্রে","শ্বাসনালিতে","ফুসফুসে"],1],
+["ইউস্টেশিয়ান নালিপথে জীবাণু সংক্রমণে মধ্যকর্ণে সৃষ্ট প্রদাহকে বলে—",["সাইনুসাইটিস","ওটিটিস মিডিয়া","ব্রংকাইটিস","ফ্যারিঞ্জাইটিস"],1],
+["অ্যালভিওলাসে বিনিময় হয়—",["শুধু অক্সিজেন","শুধু কার্বন-ডাই-অক্সাইড","অক্সিজেন ও কার্বন-ডাই-অক্সাইড","নাইট্রোজেন"],2],
+["ডায়াফ্রামে রক্ত সরবরাহ করে—",["পালমোনারি ধমনি","ফ্রেনিক ধমনি","ক্যারোটিড ধমনি","করোনারি ধমনি"],1],
+["ট্রাকিয়ার দ্বি-বিভাজনে সৃষ্ট শাখাকে বলে—",["সেকেন্ডারি ব্রঙ্কাস","প্রাইমারি ব্রঙ্কাস","ব্রঙ্কিওল","অ্যালভিওলার নালি"],1],
+["মানবদেহে ডান ফুসফুসে লোবিউল থাকে—",["৮টি","৯টি","১০টি","১২টি"],2],
+["মানুষের স্বরযন্ত্রে ভোকাল কর্ডের সংখ্যা—",["২টি","৪টি","৬টি","৮টি"],2],
+["দুচোখের মধ্যবর্তী স্থানে অবস্থিত সাইনাস—",["ম্যাক্সিলারি সাইনাস","ফ্রন্টাল সাইনাস","ইথময়েড সাইনাস","স্ফেনয়েড সাইনাস"],2],
+["ম্যাক্সিলারি সাইনাসের প্রদাহের কারণে ব্যথা হয়—",["কানে","গালে, দাঁতে বা মাথায়","গলায়","বুকে"],1],
+["ফুসফুসে পাওয়া যায়—",["সাইনোভিয়াল ফ্লুইড","সোরাস ফ্লুইড","সেরিব্রোস্পাইনাল ফ্লুইড","লসিকা"],1],
+["কাশি প্রতিবর্তী ক্রিয়ার উদ্ভব ঘটায়—",["অপটিক স্নায়ু","ভেগাস স্নায়ু","ফ্রেনিক স্নায়ু","ফেসিয়াল স্নায়ু"],1],
+["পূর্ণবয়স্ক মানুষের সমগ্র রক্তে লৌহের পরিমাণ—",["২ গ্রাম","৪ গ্রাম","৬ গ্রাম","৮ গ্রাম"],1],
+["ফুসফুসকে ঘিরে রাখা আবরণকে বলে—",["পেরিকার্ডিয়াম","প্লুরা","পেরিটোনিয়াম","মেনিনজেস"],1],
+["অধিক ধূমপানের ফলে সৃষ্ট রোগ—",["এমফাইসেমা","ব্রংকাইটিস","নিউমোনিয়া","হাঁপানি"],1],
+["ফুসফুসের প্রদাহকে বলে—",["ব্রংকাইটিস","এমফাইসেমা","প্লুরিসি","অ্যাজমা"],1],
+["ব্রঙ্কিওল বিদ্যমান—",["স্বরযন্ত্রে","ফুসফুসে","গলবিলে","শ্বাসনালিতে"],1],
+["কৃত্রিম শ্বাস-প্রশ্বাসে শিশুদের ক্ষেত্রে মিনিটে ফুঁ দিতে হয়—",["১০-১৫ বার","২০-২৫ বার","৩০-৩৫ বার","৪০-৪৫ বার"],1],
+["মানুষের বিশ্রামকালীন শ্বসন হার প্রতি মিনিটে—",["১০-১২ বার","১৪-১৮ বার","২০-২৪ বার","২৫-৩০ বার"],1]
+],
+"বর্জ্য ও নিষ্কাশন": [
+["মূত্রথলি থেকে মূত্র পরিবহনের কাজ করে—",["ইউরেটার","ইউরেথ্রা (মূত্রনালি)","নেফ্রন","পেলভিস"],1],
+["গ্লোমেরুলার ফিল্ট্রেটে অনুপস্থিত থাকে—",["গ্লুকোজ ও পানি","প্রোটিন ও রক্তকণিকা","ইউরিয়া","লবণ"],1],
+["মানবদেহে মূত্র নিষ্কাশনের সঠিক গতিপথ কোনটি?",["পেলভিস→মূত্রথলি→ইউরেটার→মূত্রনালি","পেলভিস→ইউরেটার→মূত্রথলি→মূত্রনালি","ইউরেটার→পেলভিস→মূত্রনালি→মূত্রথলি","মূত্রথলি→পেলভিস→ইউরেটার→মূত্রনালি"],1],
+["ইউরিয়া তৈরি হয়—",["বৃক্কে","যকৃতে (অরনিথিন চক্র)","অগ্ন্যাশয়ে","প্লীহায়"],1],
+["পোডোসাইট কোষ থাকে—",["নেফ্রনের নালিকায়","বোম্যানস ক্যাপসুলে","হেনলির লুপে","ইউরেটারে"],1],
+["মূত্রের স্বাভাবিক pH—",["৫.৫","৬.৫","৭.৫","৮.৫"],1],
+["বৃক্কের কার্যকারিতা নষ্ট করে দেয়—",["হিমোগ্লোবিন","মায়োগ্লোবিন","ক্রিয়েটিনিন","ইউরোক্রোম"],1],
+["গ্লোমেরুলার ফিল্ট্রেটের অধিকাংশ পুনঃশোষিত হয়—",["দূরবর্তী প্যাঁচানো নালিকায়","নিকটবর্তী প্যাঁচানো নালিকায়","হেনলির লুপে","সংগ্রাহী নালিকায়"],1],
+["মূত্রে বিদ্যমান নন-নাইট্রোজেনাস উপাদান—",["ইউরিয়া","কিটোন বডিস","ইউরিক এসিড","ক্রিয়েটিনিন"],1],
+["মূত্রের খড় বর্ণের জন্য দায়ী বস্তু—",["হিমোগ্লোবিন","ইউরোক্রোম","বিলিরুবিন","মেলানিন"],1],
+["মানব বৃক্কে রেনাল পিরামিড থাকে—",["৪-৮টি","৮-১৮টি","২০-৩০টি","৩০-৪০টি"],1],
+["পানির পুনঃশোষণ নিয়ন্ত্রণ করে—",["অ্যাল্ডোস্টেরন","ADH","ইনসুলিন","থাইরক্সিন"],1],
+["বৃক্কের রোগ নির্ণয়ের নির্দেশক—",["ইউরিয়া","ক্রিয়েটিনিন","ইউরিক এসিড","গ্লুকোজ"],1],
+["প্রতি মিনিটে মূত্র সৃষ্টি হয়—",["০.৫ ঘন সেমি","১ ঘন সেমি","২ ঘন সেমি","৩ ঘন সেমি"],1],
+["বৃক্কের অবতল অংশের ভাজকে বলে—",["কর্টেক্স","হাইলাস","মেডুলা","পেলভিস"],1],
+["দাতার দেহ থেকে গ্রহীতার দেহে বৃক্ক স্থাপন করতে হয়—",["২৪ ঘণ্টার মধ্যে","৪৮ ঘণ্টার মধ্যে","৭২ ঘণ্টার মধ্যে","৯৬ ঘণ্টার মধ্যে"],1],
+["রক্তে সোডিয়ামের মাত্রা নিয়ন্ত্রণ করে—",["ADH","অ্যাল্ডোস্টেরন","ইনসুলিন","রেনিন"],1],
+["মানবদেহের দুটি বৃক্ক প্রতিদিন রক্ত পরিশোধন করে প্রায়—",["১০০ লিটার","১৭০ লিটার","২০০ লিটার","২৫০ লিটার"],1],
+["দেহে দৈনিক মূত্রের পরিমাণ ৪০০ মিলিলিটারের কম হলে তাকে বলে—",["অ্যানুরিয়া","অলিগোরিয়া","পলিইউরিয়া","হেমাচুরিয়া"],1],
+["ডাক্ট অব বেলিনি গঠন করে—",["নেফ্রন","ইউরেটার","মূত্রনালি","বৃক্ক পেলভিস"],1]
+],
+"শৈবাল ও ছত্রাক": [
+["এককোষী ও সচল শৈবাল কোনটি?",["Chlorella","Chlamydomonas","Ulothrix","Chara"],1],
+["পাথরের গায়ে জন্মানো শৈবালকে বলে—",["এপিফাইট","লিথোফাইট","এন্ডোফাইট","বেনথিক"],1],
+["পর্ব ও পর্বমধ্যবিশিষ্ট শৈবাল—",["Ulothrix","Chlamydomonas","Chara","Polysiphonia"],2],
+["পাইরিনয়েডযুক্ত ক্লোরোপ্লাস্ট থাকে—",["Chara","Ulothrix","Polysiphonia","Chlorella"],1],
+["Polysiphonia (লোহিত শৈবাল)-এর পিগমেন্ট—",["ক্লোরোফিল ও ক্যারোটিন","ফাইকোসায়ানিন ও ফাইকোইরিথ্রিন","জ্যান্থোফিল","ফিউকোজ্যান্থিন"],1],
+["পূর্ণাঙ্গ ডায়াটমের সিলিকাময় কোষপ্রাচীরকে বলে—",["থ্যালাস","ফ্রুস্টিউল","পাইরিনয়েড","রোসেট"],1],
+["Ulothrix শৈবালের সঞ্চিত খাদ্য—",["গ্লাইকোজেন","শ্বেতসার (স্টার্চ)","প্রোটিন","তেল"],1],
+["পামেলা দশা সৃষ্টিকারী শৈবাল—",["Ulothrix","Chlamydomonas","Chara","Polysiphonia"],1],
+["ফ্ল্যাজেলাযুক্ত সচল স্পোরকে বলে—",["কনিডিয়া","জুস্পোর","ব্যাসিডিওস্পোর","উস্পোর"],1],
+["আংটি আকৃতির ক্লোরোপ্লাস্ট পাওয়া যায়—",["Chara-তে","Ulothrix-এ","Chlorella-তে","Polysiphonia-তে"],1],
+["গোল আলুর বিলম্বিত ধ্বসা রোগের জীবাণু—",["Agaricus","Phytophthora","Riccia","Chlamydomonas"],1],
+["গোল আলুর বিলম্বিত ধ্বসা রোগে ব্যবহৃত হয়—",["১% বোর্দো মিশ্রণ","শুধু কপার সালফেট","ফরমালিন","সালফার পাউডার"],0],
+["ছত্রাকের কোষপ্রাচীরের প্রধান উপাদান—",["সেলুলোজ","কাইটিন","লিগনিন","পেকটিন"],1],
+["Agaricus-এর ছাতার মতো অংশকে বলে—",["স্টাইপ","পাইলিয়াস","ভলভা","গিল"],1],
+["লাইকেন হলো—",["শুধু শৈবাল","শৈবাল ও ছত্রাকের সহাবস্থান","শুধু ছত্রাক","ব্যাকটেরিয়া ও শৈবাল"],1],
+["শাখা-প্রশাখাবিশিষ্ট আকর্ষণীয় লাইকেনকে বলে—",["ক্রাস্টোজ","ফলিওজ","ফ্রুটিকোজ","স্কোয়ামুলোজ"],2],
+["Agaricus-এর একটি বিষাক্ত প্রজাতি—",["Agaricus campestris","Agaricus xanthodermus","Agaricus bisporus","Agaricus arvensis"],1],
+["লাইকেন কীসের নির্দেশক হিসেবে কাজ করে?",["পানি দূষণ","বায়ু দূষণ","মাটি ক্ষয়","তাপমাত্রা বৃদ্ধি"],1],
+["শৈবালের কোষপ্রাচীর নির্মিত—",["কাইটিন দ্বারা","সেলুলোজ দ্বারা","লিগনিন দ্বারা","পেকটিন দ্বারা"],1],
+["Agaricus-এ তৈরি হয়—",["অ্যাসকোস্পোর","ব্যাসিডিওস্পোর","কনিডিয়া","জুস্পোর"],1]
+]
+};
+
+const LETTERS = ["ক","খ","গ","ঘ"];
+let selectedQuestions = [];
+let currentIndex = 0;
+let score = 0;
+let answered = false;
+let wrongAnswers = [];
+
+const chapterList = document.getElementById('chapterList');
+Object.keys(DATA).forEach((ch, i) => {
+  const div = document.createElement('div');
+  div.className = 'chapter-item';
+  div.innerHTML = `<input type="checkbox" checked data-ch="${i}">
+    <span class="name">${ch}</span>
+    <span class="count">${DATA[ch].length}টি</span>`;
+  div.onclick = (e) => {
+    if(e.target.tagName !== 'INPUT'){
+      const cb = div.querySelector('input');
+      cb.checked = !cb.checked;
+    }
+  };
+  chapterList.appendChild(div);
+});
+
+document.getElementById('startBtn').onclick = () => {
+  const checked = [...chapterList.querySelectorAll('input:checked')].map(i => Object.keys(DATA)[i.dataset.ch]);
+  if(checked.length === 0){ alert('অন্তত একটি অধ্যায় বাছাই করো।'); return; }
+  selectedQuestions = [];
+  checked.forEach(ch => {
+    DATA[ch].forEach(q => selectedQuestions.push({chapter: ch, q: q[0], options: q[1], correct: q[2]}));
+  });
+  if(document.getElementById('orderSelect').value === 'random'){
+    for(let i = selectedQuestions.length - 1; i > 0; i--){
+      const j = Math.floor(Math.random() * (i + 1));
+      [selectedQuestions[i], selectedQuestions[j]] = [selectedQuestions[j], selectedQuestions[i]];
+    }
+  }
+  currentIndex = 0; score = 0; wrongAnswers = [];
+  document.getElementById('setupPanel').style.display = 'none';
+  document.getElementById('resultPanel').style.display = 'none';
+  document.getElementById('quizPanel').style.display = 'block';
+  showQuestion();
+};
+
+function showQuestion(){
+  answered = false;
+  const item = selectedQuestions[currentIndex];
+  document.getElementById('chapterTag').textContent = item.chapter;
+  document.getElementById('qCounter').textContent = `প্রশ্ন ${currentIndex+1} / ${selectedQuestions.length}`;
+  document.getElementById('progressFill').style.width = `${(currentIndex/selectedQuestions.length)*100}%`;
+  document.getElementById('qText').textContent = item.q;
+  const box = document.getElementById('optionsBox');
+  box.innerHTML = '';
+  item.options.forEach((opt, idx) => {
+    const div = document.createElement('div');
+    div.className = 'option';
+    div.innerHTML = `<span class="letter">${LETTERS[idx]}</span><span>${opt}</span>`;
+    div.onclick = () => selectOption(idx, div);
+    box.appendChild(div);
+  });
+  document.getElementById('nextBtn').classList.remove('active');
+  document.getElementById('skipBtn').style.display = 'inline-block';
+}
+
+function selectOption(idx, el){
+  if(answered) return;
+  answered = true;
+  const item = selectedQuestions[currentIndex];
+  const opts = document.querySelectorAll('.option');
+  opts.forEach(o => o.classList.add('disabled'));
+  if(idx === item.correct){
+    el.classList.add('correct');
+    score++;
+  } else {
+    el.classList.add('wrong');
+    opts[item.correct].classList.add('correct');
+    wrongAnswers.push({...item, yourAnswer: item.options[idx]});
+  }
+  document.getElementById('nextBtn').classList.add('active');
+  document.getElementById('skipBtn').style.display = 'none';
+}
+
+document.getElementById('nextBtn').onclick = () => {
+  currentIndex++;
+  if(currentIndex >= selectedQuestions.length){
+    finishQuiz();
+  } else {
+    showQuestion();
+  }
+};
+
+document.getElementById('skipBtn').onclick = () => {
+  const item = selectedQuestions[currentIndex];
+  wrongAnswers.push({...item, yourAnswer: '(এড়িয়ে গেছো)'});
+  currentIndex++;
+  if(currentIndex >= selectedQuestions.length){
+    finishQuiz();
+  } else {
+    showQuestion();
+  }
+};
+
+function finishQuiz(){
+  document.getElementById('quizPanel').style.display = 'none';
+  document.getElementById('resultPanel').style.display = 'block';
+  document.getElementById('scoreNum').textContent = `${score}/${selectedQuestions.length}`;
+  const pct = Math.round((score/selectedQuestions.length)*100);
+  let msg = '';
+  if(pct >= 90) msg = 'wooo bhai shei pora disis to 🎉';
+  else if(pct >= 70) msg = 'valo korsis,r ekbr xm da de mone thkbe 👍';
+  else if(pct >= 50) msg = 'মোটামুটি, ar 2 3 bar xm de💪';
+  else msg = 'sala bncd vlo kori por age trpr xm dibir asis📖';
+  document.getElementById('resultMsg').textContent = `${pct}% সঠিক — ${msg}`;
+  document.getElementById('reviewList').style.display = 'none';
+  document.getElementById('reviewBtn').textContent = 'ভুল উত্তরগুলো দেখো';
+}
+
+document.getElementById('reviewBtn').onclick = () => {
+  const rl = document.getElementById('reviewList');
+  if(rl.style.display === 'none'){
+    if(wrongAnswers.length === 0){
+      rl.innerHTML = '<p style="color:var(--muted);text-align:center;">korsis ki bhai,,,if you are a girl i love you,will u marry me....else mama tui kintu sheu chalai ja 🎉</p>';
+    } else {
+      rl.innerHTML = wrongAnswers.map(w => `
+        <div class="review-item">
+          <div style="color:var(--accent2);font-size:0.8rem;margin-bottom:4px;">${w.chapter}</div>
+          <div>${w.q}</div>
+          <div style="margin-top:6px;">তোমার উত্তর: <span class="yours">${w.yourAnswer}</span></div>
+          <div>সঠিক উত্তর: <span class="ans">${w.options[w.correct]}</span></div>
         </div>
-    </div>
+      `).join('');
+    }
+    rl.style.display = 'block';
+    document.getElementById('reviewBtn').textContent = 'রিভিউ লুকাও';
+  } else {
+    rl.style.display = 'none';
+    document.getElementById('reviewBtn').textContent = 'ভুল উত্তরগুলো দেখো';
+  }
+};
 
-    <audio id="soundEnter" src="audio/gaaayyyyy_vUi3hqB.mp3"></audio>
-    <audio id="soundLove" src="audio/shamol-love-story.mp3"></audio> 
-    <audio id="soundBangla" src="audio/bhombola.mp3"></audio>
-    <audio id="soundICT" src="audio/anime-ahh.mp3"></audio>
-    <audio id="soundMath" src="audio/gopgopgop.mp3"></audio>
-    <audio id="soundPhysics" src="audio/kis-color-chaddi-pehne-ho.mp3"></audio>
-    <audio id="soundChemistry" src="audio/movie_1.mp3"></audio>
-    <audio id="soundBiology" src="audio/tomar-kache-bichar-dilam_lhW5Xfl.mp3"></audio>
-    <audio id="soundBOLT" src="audio/iamete-kudasai_JnQT89a.mp3"></audio>
-    <audio id="soundFriends" src="audio/nani_Pmxf5n3.mp3"></audio>
-    <audio id="soundSocial" src="audio/tole-tole-kawaii.mp3"></audio>
-    <audio id="soundMentalHealth" src="audio/1-akash-chowa.mp3"></audio>
-
-    <h1>SHAFI's Life Update</h1>
-    
-    <h2>SHAFI IS NO MORE</h2>
-    
-    <div class="life-category">
-        <h2 class="category-title"> <b>Mental Health</b></h2>
-        <p style="display: flex; justify-content: space-between; align-items: center;"> 
-              -mental health update 
-            
-            <button class="bgm-btn-black" onclick="playMentalHealth()">BGM</button>
-        </p>
-    </div>
-    
-    <div class="life-category">
-        <h2 class="category-title"><b>Love </b><button class="bgm-btn-black" onclick="playLove()">BGM</button></h2>
-        <p> -cde na keo mone lage dheo  </p>
-         
-    </div>
-
-    <div class="life-category">
-        <h2 class="category-title"><b>Study</b></h2>
-        <p>Current academic status and progress.</p>
-        
-        <button class="accordion">View Subjects</button>
-        <div class="panel">
-            <ul>
-                <li>
-                    <span><b> Bangla</b> -বুদা বাংক্লা পড়ি কি হবি? বুয়েট এ বাংলা আসে না</span>
-                    <button class="bgm-btn-black" onclick="playBangla()">BGM</button>
-                </li>
-                <li>
-                    <span><b> ICT</b> <i> -তবুও জীবন জাচ্ছে কেটে জীবনের নিয়মে</i></span>
-                    <button class="bgm-btn-black" onclick="playICT()">BGM</button>
-                </li>
-                <li>
-                    <span><b> Math </b> -চলে ১ বছর,অধ্যায় ৪,৫টা শেষ করছি্‌,এটা করি তো আর একটা মনে থাকে না</span>
-                    <button class="bgm-btn-black" onclick="playMath()">BGM</button>
-                </li>
-                <li>
-                    <span><b> Physics</b> <i> -shit bhai,3 মাস ধরি ভেক্টর শেষ করে নিজেরে বহুত বড় লেংটা ভাবসিলাম...। পরে দেখি না্‌ ,আমি ভোদাই</i></span>
-                    <button class="bgm-btn-black" onclick="playPhysics()">BGM</button>
-                </li>
-                <li>
-                    <span> <b>Chemistry </b> -ইডার অবস্থাও ict এর মতো</span>
-                    <button class="bgm-btn-black" onclick="playChemistry()">BGM</button>
-                </li>
-                <li>
-                    <span> <b>Biology </b><i> -বই ই খুলে দেখি নাই্‌া ওহ wait বই তো কিনি ই নাই</i></span>
-                    <button class="bgm-btn-black" onclick="playBiology()">BGM</button>
-                </li>
-            </ul>
-        </div>
-    </div>
-
-    <div class="life-category">
-        <h2 class="category-title"><b> BOLT </b> <button class="bgm-btn-black" onclick="playBOLT()">BGM</button></h2>
-        <p><b> -আমাড় লাঈফ এ বোল্ট এর তাতপর্য অনেক,ও না থাক্লি আমি জীবনে চুত্মারানি হইতেই পারতাম না।  instagram er kalo jogot a bolt e amake dustbion theke tule niye rajar mukut poraise . thanx bolt for distroying my life with this much joy .. i love yooooou</b></p>
-    </div>
-
-    <div class="life-category">
-        <h2 class="category-title"> <b>Friends</b> <button class="bgm-btn-black" onclick="playFriends()">BGM</button></h2>
-        <p><b> -same as love life</b></p>
-    </div>
-
-   <div class="life-category">
-        <h2 class="category-title"><b>Social</b></h2>
-        <p style="display: flex; justify-content: space-between; align-items: center;"> 
-            -BGM shune bujhe ne,,,dhorijo nai 
-            <button class="bgm-btn-black" onclick="playSocial()">BGM</button>
-        </p>
-
-        <div style="margin-top: 15px;">
-            <a href="https://www.facebook.com/md.atick.hasan.633179/" target="_blank" class="custom-link" style="margin-right: 15px; display: inline-flex; align-items: center; gap: 8px;">
-                <i class="fa-brands fa-facebook" style="color: #1877F2; font-size: 22px;"></i> Facebook
-            </a>
-            
-            <a href="https://www.instagram.com/tanvirahamedshafi/" target="_blank" class="custom-link" style="display: inline-flex; align-items: center; gap: 8px;">
-                <i class="fa-brands fa-instagram" style="color: #E1306C; font-size: 22px;"></i> Instagram
-            </a>
-        </div>
-    </div>
-
-    <div class="watermark">
-        Built by BOLT ⚡
-    </div>
-
-    <script>
-        var acc = document.getElementsByClassName("accordion");
-        for (var i = 0; i < acc.length; i++) {
-            acc[i].addEventListener("click", function() {
-                this.classList.toggle("active");
-                var panel = this.nextElementSibling;
-                if (panel.style.maxHeight) {
-                    panel.style.maxHeight = null;
-                } else {
-                    panel.style.maxHeight = panel.scrollHeight + "px";
-                } 
-            });
-        }
-    
-        function stopAllAudio() {
-            var sounds = document.getElementsByTagName('audio');
-            for(var j = 0; j < sounds.length; j++) {
-                sounds[j].pause();
-                sounds[j].currentTime = 0;
-            }
-        }
-
-        function enterSite() {
-            var overlay = document.getElementById("welcome-overlay");
-            overlay.style.opacity = "0";
-            overlay.style.visibility = "hidden";
-            stopAllAudio();
-            document.getElementById("soundEnter").play();
-        }
-
-        function playLove() { stopAllAudio(); document.getElementById("soundLove").play(); }
-        function playBangla() { stopAllAudio(); document.getElementById("soundBangla").play(); }
-        function playICT() { stopAllAudio(); document.getElementById("soundICT").play(); }
-        function playMath() { stopAllAudio(); document.getElementById("soundMath").play(); }
-        function playPhysics() { stopAllAudio(); document.getElementById("soundPhysics").play(); }
-        function playChemistry() { stopAllAudio(); document.getElementById("soundChemistry").play(); }
-        function playBiology() { stopAllAudio(); document.getElementById("soundBiology").play(); }
-        function playBOLT() { stopAllAudio(); document.getElementById("soundBOLT").play(); }
-        function playFriends() { stopAllAudio(); document.getElementById("soundFriends").play(); }
-        function playSocial() { stopAllAudio(); document.getElementById("soundSocial").play(); }
-        function playMentalHealth() { stopAllAudio(); document.getElementById("soundMentalHealth").play(); }
-    </script>
+document.getElementById('restartBtn').onclick = () => {
+  document.getElementById('resultPanel').style.display = 'none';
+  document.getElementById('setupPanel').style.display = 'block';
+};
+</script>
 </body>
 </html>
