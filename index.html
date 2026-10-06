@@ -55,3 +55,405 @@
     user-select:none;
   }
   .chapter-item input{width:18px;height:18px;accent-color:var(--accent);}
+  .chapter-item .name{flex:1;font-weight:500;}
+  .chapter-item .count{color:var(--muted);font-size:0.85rem;}
+
+  .setup-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px;}
+  .setup-row label{font-size:0.85rem;color:var(--muted);display:block;margin-bottom:6px;}
+  select{
+    background:var(--panel2);
+    color:var(--text);
+    border:1px solid var(--border);
+    border-radius:8px;
+    padding:8px 10px;
+    font-family:inherit;
+    font-size:0.9rem;
+  }
+  button{
+    font-family:inherit;
+    cursor:pointer;
+    border:none;
+  }
+  .btn-primary{
+    background:var(--accent);
+    color:#08120d;
+    font-weight:700;
+    font-size:1rem;
+    padding:14px;
+    border-radius:12px;
+    width:100%;
+    margin-top:18px;
+  }
+  .btn-primary:active{transform:scale(0.99);}
+  .btn-secondary{
+    background:transparent;
+    color:var(--accent);
+    border:1px solid var(--accent);
+    padding:10px 16px;
+    border-radius:10px;
+    font-weight:600;
+  }
+
+  /* Quiz screen */
+  .quiz-panel{
+    background:var(--panel);
+    border:1px solid var(--border);
+    border-radius:16px;
+    padding:20px;
+    display:none;
+  }
+  .progress-bar{
+    height:6px;
+    background:var(--panel2);
+    border-radius:4px;
+    overflow:hidden;
+    margin-bottom:14px;
+  }
+  .progress-fill{
+    height:100%;
+    background:var(--accent);
+    width:0%;
+    transition:width 0.3s ease;
+  }
+  .meta-row{
+    display:flex;justify-content:space-between;align-items:center;
+    color:var(--muted);font-size:0.85rem;margin-bottom:6px;
+  }
+  .chapter-tag{
+    color:var(--accent2);
+    font-weight:600;
+  }
+  .q-text{
+    font-size:1.08rem;
+    font-weight:600;
+    line-height:1.6;
+    margin:10px 0 18px;
+  }
+  .options{display:flex;flex-direction:column;gap:10px;}
+  .option{
+    background:var(--panel2);
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:13px 14px;
+    font-size:0.98rem;
+    display:flex;
+    gap:10px;
+    align-items:flex-start;
+    line-height:1.5;
+  }
+  .option .letter{
+    flex-shrink:0;
+    width:24px;height:24px;
+    border-radius:50%;
+    background:#0f1620;
+    border:1px solid var(--border);
+    display:flex;align-items:center;justify-content:center;
+    font-size:0.8rem;color:var(--muted);
+  }
+  .option.correct{
+    border-color:var(--accent);
+    background:rgba(61,220,151,0.12);
+  }
+  .option.correct .letter{background:var(--accent);color:#08120d;border-color:var(--accent);}
+  .option.wrong{
+    border-color:var(--bad);
+    background:rgba(255,107,107,0.12);
+  }
+  .option.wrong .letter{background:var(--bad);color:#2a0d0d;border-color:var(--bad);}
+  .option.disabled{cursor:default;}
+  .option:not(.disabled):active{transform:scale(0.99);}
+
+  .nav-row{
+    display:flex;justify-content:space-between;align-items:center;
+    margin-top:20px;
+  }
+  .next-btn{
+    background:var(--accent);
+    color:#08120d;
+    font-weight:700;
+    padding:11px 22px;
+    border-radius:10px;
+    font-size:0.95rem;
+    opacity:0.4;
+    pointer-events:none;
+    transition:opacity 0.2s;
+  }
+  .next-btn.active{opacity:1;pointer-events:auto;}
+  .skip-btn{color:var(--muted);font-size:0.85rem;background:none;}
+
+  /* Result screen */
+  .result-panel{display:none;text-align:center;}
+  .score-circle{
+    width:150px;height:150px;
+    border-radius:50%;
+    margin:20px auto;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    background:var(--panel2);
+    border:6px solid var(--accent);
+  }
+  .score-circle .num{font-size:2.2rem;font-weight:700;}
+  .score-circle .lbl{font-size:0.8rem;color:var(--muted);}
+  .result-msg{font-size:1.05rem;margin:10px 0 20px;color:var(--muted);}
+  .review-list{text-align:left;margin-top:20px;}
+  .review-item{
+    background:var(--panel2);
+    border:1px solid var(--border);
+    border-left:4px solid var(--bad);
+    border-radius:8px;
+    padding:12px 14px;
+    margin-bottom:10px;
+    font-size:0.92rem;
+    line-height:1.6;
+  }
+  .review-item .ans{color:var(--accent);font-weight:600;}
+  .review-item .yours{color:var(--bad);}
+  .btn-group{display:flex;gap:10px;margin-top:20px;}
+  .btn-group button{flex:1;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>🧬 বায়োলজি এক্সাম কুইজ</h1>
+    <p>টিস্যু ও নগ্নবীজী-আবৃতবীজী অধ্যায় — ঝালাই করে নাও প্রস্তুতি</p>
+  </header>
+
+  <div class="setup" id="setupPanel">
+    <label style="font-size:0.85rem;color:var(--muted);">যে অধ্যায়গুলো থেকে পরীক্ষা দিতে চাও (একাধিক বাছাই করা যাবে):</label>
+    <div class="chapter-list" id="chapterList"></div>
+
+    <div class="setup-row">
+      <div>
+        <label>প্রশ্নের ক্রম</label>
+        <select id="orderSelect">
+          <option value="sequential">সিরিয়াল অনুযায়ী</option>
+          <option value="random" selected>র‍্যান্ডম</option>
+        </select>
+      </div>
+    </div>
+
+    <button class="btn-primary" id="startBtn">পরীক্ষা শুরু করো</button>
+  </div>
+
+  <div class="quiz-panel" id="quizPanel">
+    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+    <div class="meta-row">
+      <span class="chapter-tag" id="chapterTag"></span>
+      <span id="qCounter"></span>
+    </div>
+    <div class="q-text" id="qText"></div>
+    <div class="options" id="optionsBox"></div>
+    <div class="nav-row">
+      <button class="skip-btn" id="skipBtn">এড়িয়ে যাও →</button>
+      <button class="next-btn" id="nextBtn">পরবর্তী প্রশ্ন</button>
+    </div>
+  </div>
+
+  <div class="result-panel" id="resultPanel">
+    <div class="score-circle">
+      <div class="num" id="scoreNum">0/0</div>
+      <div class="lbl">স্কোর</div>
+    </div>
+    <div class="result-msg" id="resultMsg"></div>
+    <div class="btn-group">
+      <button class="btn-secondary" id="reviewBtn">ভুল উত্তরগুলো দেখো</button>
+      <button class="btn-primary" id="restartBtn" style="margin-top:0;">আবার শুরু করো</button>
+    </div>
+    <div class="review-list" id="reviewList" style="display:none;"></div>
+  </div>
+</div>
+
+<script>
+const DATA = {
+"টিস্যু ও টিস্যুতন্ত্র": [
+  ["উদ্ভিদের অন্তঃস্টিলীয় (Intrastelar) অঞ্চলের অংশ কোনটি?", ["অধস্ত্বক ও কর্টেক্স", "পরিচক্র, মজ্জারশ্মি ও মজ্জা", "এপিব্লেমা ও অন্তঃত্বক", "ভাস্কুলার বান্ডল ও কিউটিকল"], 1],
+  ["সমদ্বিপার্শ্বীয় (Bicollateral) ভাস্কুলার বান্ডল দেখা যায় কোনটিতে?", ["একবীজপত্রী কাণ্ডে", "দ্বিবীজপত্রী মূলে", "দ্বিবীজপত্রী কাণ্ডে (লাউ, কুমড়া)", "ফার্নের পাতায়"], 2],
+  ["ভুট্টার কাণ্ডে (একবীজপত্রী কাণ্ডে) কোন ধরনের ভাস্কুলার বান্ডল বিদ্যমান?", ["মুক্ত সমপার্শ্বীয়", "বদ্ধ সমপার্শ্বীয়", "সমদ্বিপার্শ্বীয়", "অরীয়"], 1],
+  ["মেটাজাইলেম কেন্দ্রের দিকে এবং প্রোটোজাইলেম পরিধির দিকে থাকলে তাকে কী বলে?", ["এন্ডার্ক", "এক্সার্ক", "মেসার্ক", "সেন্ট্রিক"], 1],
+  ["হাইড্রোসেন্ট্রিক বা জাইলেম-কেন্দ্রিক ভাস্কুলার বান্ডল দেখা যায় কোন উদ্ভিদে?", ["Pteris ও Selaginella", "Cycas ও Pinus", "Helianthus ও Cucurbita", "Zea mays ও Oryza"], 0],
+  ["প্রোক্যাম্বিয়াম থেকে নিচের কোনটি সৃষ্টি হয়?", ["ত্বকীয় টিস্যুতন্ত্র", "ক্যাম্বিয়াম, জাইলেম ও ফ্লোয়েম", "মজ্জা ও কর্টেক্স", "কর্ক ক্যাম্বিয়াম"], 1],
+  ["নিচের কোনটি সেকেন্ডারি ভাজক টিস্যুর উদাহরণ?", ["শীর্ষস্থ ভাজক টিস্যু", "ইন্টারক্যালারি ক্যাম্বিয়াম", "ইন্টারফেসিকুলার ক্যাম্বিয়াম ও কর্ক ক্যাম্বিয়াম", "প্রোটোডার্ম"], 2],
+  ["পাতার গ্রাউন্ড টিস্যুতন্ত্রকে কী বলা হয়?", ["কর্টেক্স", "হাইপোডার্মিস", "মেসোফিল", "এপিব্লেমা"], 2],
+  ["ক্যাসপেরিয়ান স্ট্রিপ (Casparian strip) কোথায় অবস্থান করে?", ["মূলের ত্বকীয় কোষে", "মূলের অন্তঃত্বকে (Endodermis)", "কাণ্ডের মজ্জায়", "পাতার মেসোফিলে"], 1],
+  ["উদ্ভিদের এপিডার্মিস বা ত্বক সৃষ্টি হয় কোন ভাজক টিস্যু বিভাজিত হয়ে?", ["প্রোটোডার্ম", "প্রোক্যাম্বিয়াম", "গ্রাউন্ড মেরিস্টেম", "ক্যালিপ্ট্রোজেন"], 0],
+  ["পেরিসাইকল স্তর হতে ভাস্কুলার বান্ডলসহ কেন্দ্র পর্যন্ত অংশকে কী বলে?", ["হাইপোডার্মিস", "কর্টেক্স", "স্টিলি (Stele)", "এপিব্লেমা"], 2],
+  ["উদ্ভিদের মূলের বহিরাবরণী ত্বককে কী বলা হয়?", ["এপিডার্মিস", "এপিব্লেমা", "এন্ডোডার্মিস", "পেরিডার্ম"], 1],
+  ["পানি নির্মোচনকারী রন্ধ্র বা হাইডাথোড (Hydathode) পাওয়া যায় কোনটিতে?", ["কচু, টমেটো ও ঘাস", "লাউ ও কুমড়া", "Cycas ও ধান", "আম ও কাঁঠাল"], 0],
+  ["বহুকোষী বিশেষ ধরনের ট্রাইকোমকে কী বলা হয়?", ["শল্ক", "কোলেটার্স (Colleters)", "রোম", "গ্রন্থিরোম"], 1],
+  ["সকল পুষ্পক বা আবৃতবীজী উদ্ভিদের মূলে কোন ধরনের ভাস্কুলার বান্ডল থাকে?", ["সমপার্শ্বীয়", "সমদ্বিপার্শ্বীয়", "অরীয় (Radial)", "কেন্দ্রিক"], 2],
+  ["প্লেট (Plate) ভাজক টিস্যু বিভাজিত হয়ে কোনটি তৈরি হয়?", ["মজ্জা", "পাতা ও বহিত্বক", "মূলের অগ্রভাগ", "ভাস্কুলার বান্ডল"], 1],
+  ["প্রোক্যাম্বিয়াম প্রাথমিক অবস্থায় কোন তন্ত্রটি সৃষ্টি করে?", ["ভাস্কুলার বান্ডল", "গ্রাউন্ড টিস্যু", "হাইপোডার্মিস", "কর্ক"], 0],
+  ["কোন ভাজক টিস্যু সব তলে বিভাজিত হয়ে অঙ্গের সামগ্রিক আয়তন বৃদ্ধি করে?", ["রিব ভাজক টিস্যু", "প্লেট ভাজক টিস্যু", "মাস (Mass) ভাজক টিস্যু", "পার্শ্বীয় ভাজক টিস্যু"], 2],
+  ["একবীজপত্রী উদ্ভিদের মূলে জাইলেম বা ফ্লোয়েম বান্ডলের সংখ্যা কত থাকে?", ["২ থেকে ৪টি", "৪ থেকে ৬টি", "৬-এর অধিক", "সর্বদা ১টি"], 2],
+  ["মুক্ত সমপার্শ্বীয়/মুক্ত সমদ্বিপার্শ্বীয় ভাস্কুলার বান্ডল মূলত কোথায় পাওয়া যায়?", ["দ্বিবীজপত্রী উদ্ভিদের কাণ্ডে", "একবীজপত্রী উদ্ভিদের মূলে", "আবৃতবীজী উদ্ভিদের পাতায়", "জলজ উদ্ভিদের মূলে"], 0]
+],
+"নগ্নবীজী ও আবৃতবীজী": [
+  ["নগ্নবীজী উদ্ভিদের পরিবহন টিস্যুতে অনুপস্থিত থাকে—", ["ট্রাকিড ও সিভনল", "ভেসেল ও সঙ্গী কোষ", "জাইলেম প্যারেনকাইমা", "ফ্লোয়েম ফাইবার"], 1],
+  ["নগ্নবীজী উদ্ভিদে নিষেকের পূর্বে গঠিত শাঁস বা এন্ডোস্পার্মের প্লিডি কেমন?", ["হ্যাপ্লয়েড (n)", "ডিপ্লয়েড (2n)", "ট্রিপ্লয়েড (3n)", "টেট্রাপ্লয়েড (4n)"], 0],
+  ["নগ্নবীজী উদ্ভিদের একটি সুনির্দিষ্ট আদি বৈশিষ্ট্য কোনটি?", ["ফল তৈরি হওয়া", "আর্কিগোনিয়া উপস্থিত থাকা", "ট্রিপ্লয়েড শস্য গঠন", "দ্বিনিষেক ঘটা"], 1],
+  ["উদ্ভিদ জগতের মধ্যে সর্বাপেক্ষা বৃহৎ, লাটিম আকৃতির বহু-ফ্ল্যাজেলাযুক্ত শুক্রাণু কার?", ["Pinus", "Ginkgo", "Cycas", "Gnetum"], 2],
+  ["ব্যতিক্রম হিসেবে কোন নগ্নবীজী উদ্ভিদে দ্বিনিষেক (Double fertilization) পরিলক্ষিত হয়?", ["Cycas", "Pinus", "Ephedra", "Gnetum"], 2],
+  ["Cycas উদ্ভিদকে সাধারণ ভাষায় কী ফার্ন বলা হয়?", ["সান ফার্ন", "পাম ফার্ন", "ট্রি ফার্ন", "ওয়াটার ফার্ন"], 1],
+  ["Cycas-কে জীবন্ত জীবাশ্ম বলা হয় এবং এর বিশেষ মূলকে কী বলে?", ["নিউমেটোফোর", "কোরালয়েড মূল", "স্তম্ভ মূল", "ঠেস মূল"], 1],
+  ["Cycas-এর ক্ষেত্রে কোন তথ্যটি সঠিক?", ["দেহ গ্যামিটোফাইটিক", "সোরাস অযৌনভাবে তৈরি হয়", "মূল দেহ স্পোরোফাইটিক", "এদের বীজ ফলের ভেতরে থাকে"], 2],
+  ["আবৃতবীজী উদ্ভিদে নিষেকের পর গঠিত শস্য বা এন্ডোস্পার্মের প্রকৃতি কেমন?", ["হ্যাপ্লয়েড (n)", "ডিপ্লয়েড (2n)", "ট্রিপ্লয়েড (3n)", "পলিপ্লয়েড"], 2],
+  ["গর্ভপাদ পুষ্প বা অধিগর্ভ (Superior) গর্ভাশয় দেখা যায় কোন উদ্ভিদে?", ["কুমড়া ও পেয়ারা", "জবা ও ধান", "সূর্যমুখী ও ডালিয়া", "লাউ ও শসা"], 1],
+  ["পুষ্পপুট বা পেরিয়্যান্থ (Perianth)-এর প্রতিটি সদস্যকে কী বলা হয়?", ["সেপাল", "পেটাল", "টেপাল (Tepal)", "টেপাস"], 2],
+  ["সর্বমুখ পরাগধানী এবং বৃক্কাকার পরাগধানী যথাক্রমে কাদের বৈশিষ্ট্য?", ["জবা ও ধান", "ধান/গম ও জবা", "সরিষা ও মটর", "ধুতুরা ও সূর্যমুখী"], 1],
+  ["জবা ও ধানের অমরাবিন্যাস (Placentation) যথাক্রমে কেমন?", ["মূলীয় ও অক্ষীয়", "অক্ষীয় (Axile) ও মূলীয় (Basal)", "প্রান্তীয় ও বহুপ্রান্তীয়", "প্যারাইটাল ও মুক্তমধ্য"], 1],
+  ["জবা ফুলের দলমণ্ডলের এস্টিভেশন (দলবিন্যাস) কোন প্রকৃতির?", ["ভালভেট", "টুইস্টেড বা পাকানো", "ইমব্রিকেট", "ভেক্সিলারি"], 1],
+  ["ধান উদ্ভিদের ফল কোন প্রকৃতির?", ["ক্যাপসুল", "ক্যারিওপসিস (Caryopsis)", "বেরি", "ড্রুপ"], 1],
+  ["Poaceae (ঘাস) গোত্রের উদ্ভিদের পাতার গোড়ায় বিশেষ কোন অংশ থাকে?", ["অক্টিয়া", "লিগিউল (Ligule)", "পালভিনাস", "স্টিপিউল"], 1],
+  ["Poaceae গোত্রের দানাদার ভক্ষণযোগ্য খাদ্যশস্যকে কী বলা হয়?", ["লেগিউম", "সেরিয়েল (Cereal)", "সাইকোনাস", "পড"], 1],
+  ["ডায়াবেটিস রোগীদের খাদ্যতালিকায় উপকারী সবজি হিসেবে কোনটি সুপারিশ করা হয়?", ["আলু", "ঢেঁড়স", "বেগুন", "টমেটো"], 1],
+  ["রক্ত আমাশয় ও অর্শ্বরোগ উপশমে লোকজ চিকিৎসায় কোন ফুল কার্যকর?", ["গোলাপ", "জবাফুল", "গাঁদা", "বকফুল"], 1],
+  ["আমাদের প্রধান খাদ্যশস্য গমের সঠিক বৈজ্ঞানিক নাম কোনটি?", ["Oryza sativa", "Zea mays", "Triticum aestivum", "Hordeum vulgare"], 2]
+]
+};
+
+const LETTERS = ["ক","খ","গ","ঘ"];
+let selectedQuestions = [];
+let currentIndex = 0;
+let score = 0;
+let answered = false;
+let wrongAnswers = [];
+
+const chapterList = document.getElementById('chapterList');
+Object.keys(DATA).forEach((ch, i) => {
+  const div = document.createElement('div');
+  div.className = 'chapter-item';
+  div.innerHTML = `<input type="checkbox" checked data-ch="${i}">
+    <span class="name">${ch}</span>
+    <span class="count">${DATA[ch].length}টি</span>`;
+  div.onclick = (e) => {
+    if(e.target.tagName !== 'INPUT'){
+      const cb = div.querySelector('input');
+      cb.checked = !cb.checked;
+    }
+  };
+  chapterList.appendChild(div);
+});
+
+document.getElementById('startBtn').onclick = () => {
+  const checked = [...chapterList.querySelectorAll('input:checked')].map(i => Object.keys(DATA)[i.dataset.ch]);
+  if(checked.length === 0){ alert('অন্তত একটি অধ্যায় বাছাই করো।'); return; }
+  selectedQuestions = [];
+  checked.forEach(ch => {
+    DATA[ch].forEach(q => selectedQuestions.push({chapter: ch, q: q[0], options: q[1], correct: q[2]}));
+  });
+  if(document.getElementById('orderSelect').value === 'random'){
+    for(let i = selectedQuestions.length - 1; i > 0; i--){
+      const j = Math.floor(Math.random() * (i + 1));
+      [selectedQuestions[i], selectedQuestions[j]] = [selectedQuestions[j], selectedQuestions[i]];
+    }
+  }
+  currentIndex = 0; score = 0; wrongAnswers = [];
+  document.getElementById('setupPanel').style.display = 'none';
+  document.getElementById('resultPanel').style.display = 'none';
+  document.getElementById('quizPanel').style.display = 'block';
+  showQuestion();
+};
+
+function showQuestion(){
+  answered = false;
+  const item = selectedQuestions[currentIndex];
+  document.getElementById('chapterTag').textContent = item.chapter;
+  document.getElementById('qCounter').textContent = `প্রশ্ন ${currentIndex+1} / ${selectedQuestions.length}`;
+  document.getElementById('progressFill').style.width = `${(currentIndex/selectedQuestions.length)*100}%`;
+  document.getElementById('qText').textContent = item.q;
+  const box = document.getElementById('optionsBox');
+  box.innerHTML = '';
+  item.options.forEach((opt, idx) => {
+    const div = document.createElement('div');
+    div.className = 'option';
+    div.innerHTML = `<span class="letter">${LETTERS[idx]}</span><span>${opt}</span>`;
+    div.onclick = () => selectOption(idx, div);
+    box.appendChild(div);
+  });
+  document.getElementById('nextBtn').classList.remove('active');
+  document.getElementById('skipBtn').style.display = 'inline-block';
+}
+
+function selectOption(idx, el){
+  if(answered) return;
+  answered = true;
+  const item = selectedQuestions[currentIndex];
+  const opts = document.querySelectorAll('.option');
+  opts.forEach(o => o.classList.add('disabled'));
+  if(idx === item.correct){
+    el.classList.add('correct');
+    score++;
+  } else {
+    el.classList.add('wrong');
+    opts[item.correct].classList.add('correct');
+    wrongAnswers.push({...item, yourAnswer: item.options[idx]});
+  }
+  document.getElementById('nextBtn').classList.add('active');
+  document.getElementById('skipBtn').style.display = 'none';
+}
+
+document.getElementById('nextBtn').onclick = () => {
+  currentIndex++;
+  if(currentIndex >= selectedQuestions.length){
+    finishQuiz();
+  } else {
+    showQuestion();
+  }
+};
+
+document.getElementById('skipBtn').onclick = () => {
+  const item = selectedQuestions[currentIndex];
+  wrongAnswers.push({...item, yourAnswer: '(এড়িয়ে গেছো)'});
+  currentIndex++;
+  if(currentIndex >= selectedQuestions.length){
+    finishQuiz();
+  } else {
+    showQuestion();
+  }
+};
+
+function finishQuiz(){
+  document.getElementById('quizPanel').style.display = 'none';
+  document.getElementById('resultPanel').style.display = 'block';
+  document.getElementById('scoreNum').textContent = `${score}/${selectedQuestions.length}`;
+  const pct = Math.round((score/selectedQuestions.length)*100);
+  let msg = '';
+  if(pct >= 90) msg = 'wooo bhai shei pora disis to 🎉';
+  else if(pct >= 70) msg = 'valo korsis,r ekbr xm da de mone thkbe 👍';
+  else if(pct >= 50) msg = 'মোটামুটি, ar 2 3 bar xm de💪';
+  else msg = 'sala bncd vlo kori por age trpr xm dibir asis📖';
+  document.getElementById('resultMsg').textContent = `${pct}% সঠিক — ${msg}`;
+  document.getElementById('reviewList').style.display = 'none';
+  document.getElementById('reviewBtn').textContent = 'ভুল উত্তরগুলো দেখো';
+}
+
+document.getElementById('reviewBtn').onclick = () => {
+  const rl = document.getElementById('reviewList');
+  if(rl.style.display === 'none'){
+    if(wrongAnswers.length === 0){
+      rl.innerHTML = '<p style="color:var(--muted);text-align:center;">korsis ki bhai,,,if you are a girl i love you,will u marry me....else mama tui kintu sheu chalai ja 🎉</p>';
+    } else {
+      rl.innerHTML = wrongAnswers.map(w => `
+        <div class="review-item">
+          <div style="color:var(--accent2);font-size:0.8rem;margin-bottom:4px;">${w.chapter}</div>
+          <div>${w.q}</div>
+          <div style="margin-top:6px;">তোমার উত্তর: <span class="yours">${w.yourAnswer}</span></div>
+          <div>সঠিক উত্তর: <span class="ans">${w.options[w.correct]}</span></div>
+        </div>
+      `).join('');
+    }
+    rl.style.display = 'block';
+    document.getElementById('reviewBtn').textContent = 'রিভিউ লুকাও';
+  } else {
+    rl.style.display = 'none';
+    document.getElementById('reviewBtn').textContent = 'ভুল উত্তরগুলো দেখো';
+  }
+};
+
+document.getElementById('restartBtn').onclick = () => {
+  document.getElementById('resultPanel').style.display = 'none';
+  document.getElementById('setupPanel').style.display = 'block';
+};
+</script>
+</body>
+</html>
